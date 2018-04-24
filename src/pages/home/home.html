@@ -1,14 +1,26 @@
 <ion-header>
   <ion-navbar>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>
+    </button>
     <ion-title>
-      Ionic Blank
+      Home
     </ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
+  <ion-slides [initialSlide]=1 (ionSlideDidChange)="slideChanged()">
+    <ion-slide>
+      <calendar [date]="prevDate"></calendar>
+    </ion-slide>
+    <ion-slide>
+      <calendar [date]="date"></calendar>
+    </ion-slide>
+    <ion-slide>
+      <calendar [date]="nextDate"></calendar>
+    </ion-slide>
+  </ion-slides>
+  
+  <button ion-button block menuToggle>Toggle Menu</button>
   The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
 </ion-content>
