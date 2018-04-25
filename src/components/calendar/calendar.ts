@@ -18,16 +18,33 @@ export class CalendarComponent implements OnChanges, OnInit {
 
   @Input() date: moment.Moment;
 
+  // Array of dates.
+  // This array will always be of length 35 (7 x 5)
+  calendarDays: moment.Moment[];
+
+  // Header row of calendar
+  calendarHeaderRow: moment.Moment[];
+
+  calendarRowIndices: number[];
+  calendarColIndices: number[];
+
   constructor() {
     // if (!this.date) {
     //   this.date = moment();
     // }
-    
+    this.calendarDays = new Array(35);
+    this.calendarHeaderRow = new Array(7);
+    this.calendarRowIndices = new Array(5).fill(0);
+    this.calendarRowIndices.forEach((val, i) => { this.calendarRowIndices[i] = i });
+    this.calendarColIndices = new Array(7).fill(0);
+    this.calendarColIndices.forEach((val, i) => { this.calendarColIndices[i] = i });
   }
 
   ngOnInit() {
     this.month = this.date.format("MMMM");
     this.year = this.date.format("YYYY");
+    this.loadCalendarHeaderRow();
+    this.loadCalendarDays();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -38,6 +55,36 @@ export class CalendarComponent implements OnChanges, OnInit {
   refreshDate() {
     this.month = this.date.format("MMMM");
     this.year = this.date.format("YYYY");
+    this.loadCalendarDays();
+  }
+
+  loadCalendarHeaderRow() {
+    for (let i = 0; i < this.calendarHeaderRow.length; ++i) {
+      this.calendarHeaderRow[i] = moment().day(i);
+    } 
+  }
+
+  loadCalendarDays() {
+    // Get the first day of the month.
+    // First clone the date.
+    let firstDayOfMonth = this.date.clone().startOf("month");
+
+    // The first day of the week is our index into the calendar array.
+    let dayOfWeek = firstDayOfMonth.day();
+
+    this.calendarDays[dayOfWeek] = firstDayOfMonth;
+
+    // Now copy all previous days from last month
+    for (let i = dayOfWeek - 1; i >= 0; --i)
+    {
+      this.calendarDays[i] = this.calendarDays[i + 1].clone().subtract(1, "day");
+    }
+
+    // Copy all future days
+    for (let i = dayOfWeek + 1; i < this.calendarDays.length; ++i)
+    {
+      this.calendarDays[i] = this.calendarDays[i - 1].clone().add(1, "day");
+    }
   }
 
 }
