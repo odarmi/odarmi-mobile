@@ -1,5 +1,6 @@
 import { Component, Input, SimpleChanges, OnInit, OnChanges } from '@angular/core';
 import * as moment from "moment";
+import { Slides } from 'ionic-angular';
 
 /**
  * Generated class for the CalendarComponent component.
@@ -13,10 +14,12 @@ import * as moment from "moment";
 })
 export class CalendarComponent implements OnChanges, OnInit {
 
+  today: moment.Moment;
   month: string;
   year: string;
 
   @Input() date: moment.Moment;
+  @Input() slides: Slides;
 
   // Array of dates.
   // This array will always be of length 35 (7 x 5)
@@ -32,6 +35,7 @@ export class CalendarComponent implements OnChanges, OnInit {
     // if (!this.date) {
     //   this.date = moment();
     // }
+    this.today = moment();
     this.calendarDays = new Array(35);
     this.calendarHeaderRow = new Array(7);
     this.calendarRowIndices = new Array(5).fill(0);
@@ -86,5 +90,19 @@ export class CalendarComponent implements OnChanges, OnInit {
       this.calendarDays[i] = this.calendarDays[i - 1].clone().add(1, "day");
     }
   }
+
+  goToPrevMonth() {
+    this.slides.slidePrev();
+  }
+
+  goToNextMonth() {
+    this.slides.slideNext();
+  }
+
+  getDateFromIndex(rowIndex: number, colIndex: number): moment.Moment {
+    return this.calendarDays[rowIndex * 7 + colIndex];
+  }
+
+ 
 
 }

@@ -11,13 +11,13 @@
 <ion-content padding>
   <ion-slides [initialSlide]=1 (ionSlideDidChange)="slideChanged()">
     <ion-slide>
-      <calendar [date]="prevDate"></calendar>
+      <calendar [date]="prevDate" [slides]="slides"></calendar>
     </ion-slide>
     <ion-slide>
-      <calendar [date]="date"></calendar>
+      <calendar [date]="date" [slides]="slides"></calendar>
     </ion-slide>
     <ion-slide>
-      <calendar [date]="nextDate"></calendar>
+      <calendar [date]="nextDate" [slides]="slides"></calendar>
     </ion-slide>
   </ion-slides>
   
