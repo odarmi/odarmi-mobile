@@ -8,6 +8,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { HomePageModule } from '../pages/home/home.module';
 import { CalendarModule } from '../components/calendar/calendar.module';
+import { MoodProvider } from '../providers/mood/mood';
+import { UserProvider } from '../providers/user/user';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { CalendarModule } from '../components/calendar/calendar.module';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    MoodProvider,
+    UserProvider
   ]
 })
 export class AppModule {}

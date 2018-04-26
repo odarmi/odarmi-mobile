@@ -1,16 +1,18 @@
 
 import { CalendarComponent } from "../../components/calendar/calendar";
 
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, OnInit } from '@angular/core';
 import { NavController, Slides } from 'ionic-angular';
 import * as moment from "moment";
+import { MoodProvider } from "../../providers/mood/mood";
 
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnInit {
+
   date: moment.Moment;
   // Next month
   nextDate: moment.Moment;
@@ -21,7 +23,8 @@ export class HomePage {
 
   @ViewChild(Slides) slides: Slides;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,
+              private moodService: MoodProvider) {
     this.date = moment();
     
     this.prevDate = this.date.clone();
@@ -34,6 +37,16 @@ export class HomePage {
     this.year = this.date.format("YYYY");
 
     // this.slides.slideTo(2);
+  }
+
+  ngOnInit() {
+    this.getMoods();
+  }
+
+  async getMoods() {
+    let moods = await this.moodService.getMoods();
+    console.log(`Moods: ${JSON.stringify(moods.data)}`);
+    return moods;
   }
 
   slideChanged() {
