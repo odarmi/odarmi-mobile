@@ -1,6 +1,7 @@
 import { Component, Input, SimpleChanges, OnInit, OnChanges } from '@angular/core';
 import * as moment from "moment";
 import { Slides } from 'ionic-angular';
+import { TimeoutDebouncer } from 'ionic-angular/util/debouncer';
 
 /**
  * Generated class for the CalendarComponent component.
@@ -36,8 +37,8 @@ export class CalendarComponent implements OnChanges, OnInit {
     //   this.date = moment();
     // }
     this.today = moment();
-    this.calendarDays = new Array(35);
-    this.calendarHeaderRow = new Array(7);
+    this.calendarDays = new Array(35).fill(null);
+    this.calendarHeaderRow = new Array(7).fill(null);
     this.calendarRowIndices = new Array(5).fill(0);
     this.calendarRowIndices.forEach((val, i) => { this.calendarRowIndices[i] = i });
     this.calendarColIndices = new Array(7).fill(0);

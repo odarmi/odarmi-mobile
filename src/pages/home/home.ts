@@ -44,8 +44,14 @@ export class HomePage implements OnInit {
   }
 
   async getMoods() {
-    let moods = await this.moodService.getMoods();
-    console.log(`Moods: ${JSON.stringify(moods.data)}`);
+    let moods = [];
+    try {
+      let moods = await this.moodService.getMoods();
+      console.log(`Moods: ${moods.data.length}`);
+    }
+    catch(err) {
+      console.error(err);
+    }
     return moods;
   }
 
@@ -72,7 +78,7 @@ export class HomePage implements OnInit {
   }
 
   goToPrevMonth() {
-    console.log("Moving to next month...");
+    console.log("Moving to prev month...");
     
     this.date.subtract(1, "M");
     this.prevDate.subtract(1, "M");

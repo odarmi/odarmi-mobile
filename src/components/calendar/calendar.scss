@@ -1,5 +1,39 @@
+
+@import "../../theme/variables.scss";
+
+$calendar-colors: (
+    primary: #89AAE6,
+    text-dark: #061826,
+    text-light: #FFFBFE,
+    text-muted: #778188
+);
+
 calendar {
-    .suc {
+    .day {
+        color: map-get($calendar-colors, text-dark);
+        background: white;
+
+        // &:hover {
+        //     color: map-get($calendar-colors, text-light);
+        //     background: map-get($calendar-colors, primary);
+        // }
+    }
+
+    .day_active-day {
+        color: map-get($calendar-colors, text-light);
+        background-color: map-get($calendar-colors, primary);
+
+        // &:hover {
+        //     color: map-get($calendar-colors, text-light);
+        //     background: map-get($calendar-colors, primary);
+        // }
+    }
+
+    .day_active-month {
         
+    }
+
+    .day_inactive {
+        color: map-get($calendar-colors, text-muted);
     }
 }

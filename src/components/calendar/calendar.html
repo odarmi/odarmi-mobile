@@ -17,9 +17,19 @@
         {{date?.format("ddd")}}
       </ion-col>
     </ion-row>
-    <ion-row *ngFor="let week of calendarRowIndices">
-      <ion-col *ngFor="let day of calendarColIndices">
-        <button *ngIf="getDateFromIndex(week, day).month() == this.date.month()" ion-button clear round color="primary">
+    <ion-row align-items-center *ngFor="let week of calendarRowIndices">
+      <ion-col align-self-center *ngFor="let day of calendarColIndices">
+        <!-- <button class="day" ion-col ion-button full clear round color="primary" [ngClass]="{
+          'day_active-day': getDateFromIndex(week, day).dayOfYear() != today.dayOfYear(),
+          'day_active-month': getDateFromIndex(week, day).month() == date.month(),
+          'day_inactive': getDateFromIndex(week, day).month() != date.month()          
+        }">
+          {{getDateFromIndex(week, day).date()}}
+        </button> -->
+        <button class="day day_active-day" *ngIf="getDateFromIndex(week, day).dayOfYear() == today.dayOfYear()">
+          {{getDateFromIndex(week, day).date()}}
+        </button>
+        <button class="day day_active-month" *ngIf="getDateFromIndex(week, day).month() == date.month()">
           {{getDateFromIndex(week, day).date()}}
         </button>
       </ion-col>
