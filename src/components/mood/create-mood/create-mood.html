@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>Create Mood</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form #createMoodForm="ngForm">
+    <ion-list>
+      <ion-item>
+        <ion-label color="primary"></ion-label>
+        <ion-input placeholder="Name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary"></ion-label>
+        <ion-input type="datetime-local" placeholder="Start Time"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary"></ion-label>
+        <ion-input type="datetime-local" placeholder="End Time"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary"></ion-label>
+        <ion-input placeholder="Location"></ion-input>
+      </ion-item>
+    </ion-list>
+  </form>
+
+</ion-content>

@@ -2,9 +2,10 @@
 import { CalendarComponent } from "../../components/calendar/calendar";
 
 import { Component, Input, ViewChild, OnInit } from '@angular/core';
-import { NavController, Slides } from 'ionic-angular';
+import { NavController, Slides, ModalController } from 'ionic-angular';
 import * as moment from "moment";
 import { MoodProvider } from "../../providers/mood/mood";
+import { CreateMoodComponent } from "../../components/mood/create-mood/create-mood";
 
 
 @Component({
@@ -24,7 +25,8 @@ export class HomePage implements OnInit {
   @ViewChild(Slides) slides: Slides;
 
   constructor(public navCtrl: NavController,
-              private moodService: MoodProvider) {
+              private moodService: MoodProvider,
+              public modalController: ModalController) {
     this.date = moment();
     
     this.prevDate = this.date.clone();
@@ -99,7 +101,8 @@ export class HomePage implements OnInit {
   }
 
   addMood() {
-    console.log("Add mood");
+    let modal = this.modalController.create(CreateMoodComponent, {});
+    modal.present();
   }
 
 }

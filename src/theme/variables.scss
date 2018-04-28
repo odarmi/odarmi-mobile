@@ -22,7 +22,14 @@ $app-direction: ltr;
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
-
+@font-face {
+  font-family: "Open Sans";
+  src: url($font-path+"/OpenSans/OpenSans-Regular.ttf");
+}
+$font-family-base: "Open Sans";
+$font-family-ios-base: "Open Sans";
+$font-family-md-base: "Open Sans";
+$font-family-wp-base: "Open Sans";
 
 
 // Named Color Variables
