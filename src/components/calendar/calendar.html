@@ -26,12 +26,17 @@
         }">
           {{getDateFromIndex(week, day).date()}}
         </button> -->
-        <button class="day day_active-day" *ngIf="getDateFromIndex(week, day).dayOfYear() == today.dayOfYear()">
+        <button ion-button ion-col clear round class="day day_active-day" *ngIf="getDateFromIndex(week, day).dayOfYear() == today.dayOfYear(); else notCurrentDay">
           {{getDateFromIndex(week, day).date()}}
         </button>
-        <button class="day day_active-month" *ngIf="getDateFromIndex(week, day).month() == date.month()">
-          {{getDateFromIndex(week, day).date()}}
-        </button>
+        <ng-template #notCurrentDay>
+          <button ion-button ion-col clear round class="day day_active-month" *ngIf="getDateFromIndex(week, day).month() == date.month()">
+            {{getDateFromIndex(week, day).date()}}
+          </button>
+          <button ion-button ion-col clear round class="day day_inactive" *ngIf="getDateFromIndex(week, day).month() != date.month()">
+            {{getDateFromIndex(week, day).date()}}
+          </button>
+        </ng-template>
       </ion-col>
     </ion-row>
   </ion-grid>

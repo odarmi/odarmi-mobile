@@ -1,8 +1,8 @@
 
-
 let config = {
     server: {
-        port: 3000
+        host: "https://odarmi.benfu.me/api",
+        port: 80
     }
 };
 

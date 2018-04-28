@@ -98,4 +98,8 @@ export class HomePage implements OnInit {
     this.nextDate = this.nextDate.clone();
   }
 
+  addMood() {
+    console.log("Add mood");
+  }
+
 }

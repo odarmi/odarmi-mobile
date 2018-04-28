@@ -23,7 +23,9 @@ export class MoodProvider {
   }
 
   async getMoods(): Promise<AxiosResponse> {
-    let moods = await axios.get("http://localhost:3000/api/moods");
+    let url = `${this.serverConfig.host}/moods`;
+    console.log(`url: ${url}`);
+    let moods = await axios.get(url);
     return moods;
   }
 
