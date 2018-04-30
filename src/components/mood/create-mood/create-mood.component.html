@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>How are you feeling?</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form #createMoodForm="ngForm" (ngSubmit)="onSubmit()">
+    <ion-item-group>
+      <ion-item>
+          <ion-label>Mood</ion-label>
+          <ion-range min="1" max="5" step="1" snaps="true" name="mood" [(ngModel)]="newMood.mood">
+              <ion-icon range-left name="sad"></ion-icon>
+              <ion-icon range-right name="happy"></ion-icon>
+          </ion-range>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" floating>Begin Time</ion-label>
+        <ion-datetime name="beginTime" displayFormat="DDDD, MMMM D, YYYY    h:mm a" [(ngModel)]="newMood.beginTime">{{newMood.startTime}}</ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" floating>End Time</ion-label>
+        <ion-datetime name="endTime" displayFormat="DDDD, MMMM D, YYYY    h:mm a" [(ngModel)]="newMood.endTime">{{newMood.endTime}}</ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" floating>Location</ion-label>
+        <ion-input type="text" name="location" [(ngModel)]="newMood.locationName" (ionFocus)="openPlacesSearch()">{{newMood.locationName}}</ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" floating>What are you doing?</ion-label>
+        <ion-input type="text" id="name" name="name" [(ngModel)]="newMood.activity">{{newMood.activity}}</ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" floating>Name this mood entry (optional)</ion-label>
+        <ion-input type="text" id="name" name="name" [(ngModel)]="newMood.name">{{newMood.name}}</ion-input>
+      </ion-item>
+      <ion-item-divider>
+        Current Weather
+      </ion-item-divider>
+      <ion-item>
+        {{currentWeather?.summary}}
+      </ion-item>
+    </ion-item-group>
+    <button ion-button full>Add</button>
+  </form>
+
+</ion-content>

@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-slides [initialSlide]=1 (ionSlideDidChange)="slideChanged()">
+  <ion-slides [centeredSlides]="true" [initialSlide]=1 (ionSlideDidChange)="slideChanged()">
     <ion-slide>
       <calendar [date]="prevDate" [slides]="slides"></calendar>
     </ion-slide>
@@ -20,8 +20,24 @@
       <calendar [date]="nextDate" [slides]="slides"></calendar>
     </ion-slide>
   </ion-slides>
-  
+
+  <ion-card>
+    <ion-list>
+      <ion-list-header>
+        Your Mood Today
+      </ion-list-header>
+      <ion-item *ngFor="let mood of moodsToday">
+        {{mood.mood}}
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+
   <ion-fab bottom right>
-    <button ion-fab color="primary" (click)="addMood()"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab color="primary" (click)="addMood()">
+      <ion-icon name="add"></ion-icon>
+    </button>
   </ion-fab>
+
+
 </ion-content>

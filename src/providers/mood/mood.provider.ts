@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import axios, { AxiosResponse } from "axios";
 
 import { config } from "../../config/default";
+import { Mood } from '../../components/mood/mood.model';
 
 /*
   Generated class for the MoodProvider provider.
@@ -27,6 +28,19 @@ export class MoodProvider {
     console.log(`url: ${url}`);
     let moods = await axios.get(url);
     return moods;
+  }
+
+  async addMood(mood: Mood): Promise<AxiosResponse> {
+    let url = `${this.serverConfig.host}/moods`;
+    let res = {};
+    try {
+      let res = await axios.post(url, mood);
+      return res;
+    }
+    catch(err) {
+      console.error(err);
+    }
+    
   }
 
 }

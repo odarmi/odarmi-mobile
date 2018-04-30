@@ -1,4 +1,5 @@
 import moment, { Moment } from "moment";
+import { PlacesProvider } from "../../providers/places/places.provider";
 
 enum ActivityTypes {
   ""
@@ -13,16 +14,32 @@ enum MoodTypes {
 };
 
 class Mood {
+  public userId: number;
+
   public name: string;
-  public beginTime: moment.Moment;
-  public endTime: moment.Moment;
-  public locationId: string;
-  public location: string;
-  public activity: ActivityTypes;
+  public beginTime: string;
+  public endTime: string;
+  public placeId: string;
+  public activity: string;
+  public weather: string;
   public mood: MoodTypes;
 
-  constructor() {
+  // ML Data
+  public address: string;
+  public category: string;
+  public locationName: string;
 
+  constructor() {
+    this.userId = 1;
+  }
+
+  /**
+   * Fills the machine learning data with the data from the place id.
+   */
+  fillPlaceData(placeDetails: google.maps.places.PlaceResult) {
+    this.address = placeDetails.formatted_address;
+    this.category = placeDetails.types[0];
+    this.locationName = placeDetails.name;
   }
 }
 

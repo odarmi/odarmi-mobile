@@ -1,11 +1,12 @@
 
-import { CalendarComponent } from "../../components/calendar/calendar";
+import { CalendarComponent } from "../../components/calendar/calendar.component";
 
 import { Component, Input, ViewChild, OnInit } from '@angular/core';
 import { NavController, Slides, ModalController } from 'ionic-angular';
 import * as moment from "moment";
-import { MoodProvider } from "../../providers/mood/mood";
-import { CreateMoodComponent } from "../../components/mood/create-mood/create-mood";
+import { MoodProvider } from "../../providers/mood/mood.provider";
+import { CreateMoodComponent } from "../../components/mood/create-mood/create-mood.component";
+import { Mood } from "../../components/mood/mood.model";
 
 
 @Component({
@@ -22,6 +23,9 @@ export class HomePage implements OnInit {
   month: string;
   year: string;
 
+  moods: Mood[];
+  moodsToday: Mood[];
+
   @ViewChild(Slides) slides: Slides;
 
   constructor(public navCtrl: NavController,
@@ -37,24 +41,24 @@ export class HomePage implements OnInit {
 
     this.month = this.date.format("MMMM");
     this.year = this.date.format("YYYY");
-
     // this.slides.slideTo(2);
   }
 
-  ngOnInit() {
-    this.getMoods();
-  }
-
-  async getMoods() {
-    let moods = [];
-    try {
-      let moods = await this.moodService.getMoods();
-      console.log(`Moods: ${moods.data.length}`);
-    }
-    catch(err) {
-      console.error(err);
-    }
-    return moods;
+  async ngOnInit() {
+    let res = await this.moodService.getMoods();
+    this.moods = res.data;
+    this.moods.sort((a, b) => {
+      if (moment(a.beginTime).isAfter(moment(b.beginTime))) {
+        return -1;
+      }
+      return 1;
+    });
+    this.moodsToday = this.moods.filter((mood) => {
+      return moment(mood.beginTime).isSame(moment(), "day") ||
+              moment(mood.endTime).isSame(moment(), "day");
+    });
+    console.log(this.moods[0]);
+    console.log(this.moodsToday);
   }
 
   slideChanged() {

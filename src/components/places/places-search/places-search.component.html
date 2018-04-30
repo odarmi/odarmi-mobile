@@ -1,0 +1,19 @@
+<ion-content>
+    <ion-searchbar animated [showCancelButton]="true" (ionInput)="onInput($event)" (ionCancel)="onCancel($event)" [(ngModel)]="input"></ion-searchbar>
+        <ion-item-group>
+            <ion-item *ngFor="let placePrediction of placePredictions" (click)="selectPlace(placePrediction)">
+                {{placePrediction.description}}
+            </ion-item>
+        </ion-item-group>
+        
+        <ion-item-group>
+            <ion-item-divider>Nearby</ion-item-divider>
+            <ion-item *ngFor="let nearbyPlace of nearbyPlaces" (click)="selectPlace(nearbyPlace)">
+                <ion-avatar item-start>
+                    <img src={{nearbyPlace.icon}}>
+                </ion-avatar>
+                {{nearbyPlace.name}}
+            </ion-item> 
+        </ion-item-group>
+
+</ion-content>

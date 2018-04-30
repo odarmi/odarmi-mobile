@@ -9,9 +9,10 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { HomePageModule } from '../pages/home/home.module';
 import { CalendarModule } from '../components/calendar/calendar.module';
-import { MoodProvider } from '../providers/mood/mood';
-import { UserProvider } from '../providers/user/user';
-import { PlacesProvider } from '../providers/places/places';
+import { MoodProvider } from '../providers/mood/mood.provider';
+import { UserProvider } from '../providers/user/user.provider';
+import { PlacesProvider } from '../providers/places/places.provider';
+import { WeatherProvider } from '../providers/weather/weather.provider';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { PlacesProvider } from '../providers/places/places';
     MoodProvider,
     UserProvider,
     PlacesProvider,
+    WeatherProvider,
     Geolocation
   ]
 })

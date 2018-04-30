@@ -1,0 +1,36 @@
+<!-- Generated template for the CalendarComponent component -->
+<div class="calendar-header">
+  <ion-row class="calendar-month">
+    <ion-col col-2 (click)="goToPrevMonth()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-col>
+    <ion-col col-8>{{ month }} {{ year }}</ion-col>
+    <ion-col col-2 (click)="goToNextMonth()">
+      <ion-icon name="arrow-forward"></ion-icon>
+    </ion-col>
+  </ion-row>
+</div>
+<div class="calendar-body">
+  <ion-grid>
+    <ion-row class="calendar-header">
+      <ion-col *ngFor="let date of calendarHeaderRow" class="calendar-header">
+        {{date?.format("ddd")}}
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center *ngFor="let week of calendarRowIndices">
+      <ion-col align-self-center *ngFor="let day of calendarColIndices">
+        <button ion-button ion-col clear round class="day day_active-day" *ngIf="getDateFromIndex(week, day).isSame(today, 'day'); else notCurrentDay">
+          {{getDateFromIndex(week, day).date()}} {{averageMood(week, day)}}
+        </button>
+        <ng-template #notCurrentDay>
+          <button ion-button ion-col clear round class="day day_active-month" *ngIf="getDateFromIndex(week, day).isSame(date, 'month')">
+            {{getDateFromIndex(week, day).date()}} {{averageMood(week, day)}}
+          </button>
+          <button ion-button ion-col clear round class="day day_inactive" *ngIf="!getDateFromIndex(week, day).isSame(date, 'month')">
+            {{getDateFromIndex(week, day).date()}} {{averageMood(week, day)}}
+          </button>
+        </ng-template>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

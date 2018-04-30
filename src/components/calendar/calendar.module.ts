@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CalendarComponent } from './calendar';
+import { CalendarComponent } from './calendar.component';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from 'ionic-angular';
 @NgModule({

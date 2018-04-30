@@ -2,6 +2,8 @@ import { Component, Input, SimpleChanges, OnInit, OnChanges } from '@angular/cor
 import * as moment from "moment";
 import { Slides } from 'ionic-angular';
 import { TimeoutDebouncer } from 'ionic-angular/util/debouncer';
+import { MoodProvider } from '../../providers/mood/mood.provider';
+import { Mood } from '../mood/mood.model';
 
 /**
  * Generated class for the CalendarComponent component.
@@ -11,7 +13,7 @@ import { TimeoutDebouncer } from 'ionic-angular/util/debouncer';
  */
 @Component({
   selector: 'calendar',
-  templateUrl: 'calendar.html'
+  templateUrl: 'calendar.component.html'
 })
 export class CalendarComponent implements OnChanges, OnInit {
 
@@ -21,6 +23,12 @@ export class CalendarComponent implements OnChanges, OnInit {
 
   @Input() date: moment.Moment;
   @Input() slides: Slides;
+
+  moods: Mood[];
+
+  // History of moods (array of array of moods).
+  // This array will always be of length 35 (7 x 5)
+  moodHistory: Mood[][];
 
   // Array of dates.
   // This array will always be of length 35 (7 x 5)
@@ -32,11 +40,14 @@ export class CalendarComponent implements OnChanges, OnInit {
   calendarRowIndices: number[];
   calendarColIndices: number[];
 
-  constructor() {
+  constructor(
+    private moodProvider: MoodProvider
+  ) {
     // if (!this.date) {
     //   this.date = moment();
     // }
     this.today = moment();
+    this.moodHistory = new Array(35).fill(null);
     this.calendarDays = new Array(35).fill(null);
     this.calendarHeaderRow = new Array(7).fill(null);
     this.calendarRowIndices = new Array(5).fill(0);
@@ -45,11 +56,12 @@ export class CalendarComponent implements OnChanges, OnInit {
     this.calendarColIndices.forEach((val, i) => { this.calendarColIndices[i] = i });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.month = this.date.format("MMMM");
     this.year = this.date.format("YYYY");
     this.loadCalendarHeaderRow();
     this.loadCalendarDays();
+    this.loadMoodsForMonth();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -61,6 +73,7 @@ export class CalendarComponent implements OnChanges, OnInit {
     this.month = this.date.format("MMMM");
     this.year = this.date.format("YYYY");
     this.loadCalendarDays();
+    this.loadMoodsForMonth();
   }
 
   loadCalendarHeaderRow() {
@@ -92,6 +105,21 @@ export class CalendarComponent implements OnChanges, OnInit {
     }
   }
 
+  async loadMoodsForMonth() {
+    let res = await this.moodProvider.getMoods();
+    let allMoods: Mood[] = res.data;
+    this.moods = allMoods.filter((mood) => {
+      return moment(mood.beginTime).isSame(this.date, "month");
+    });
+    // console.log(this.moods);
+    this.calendarDays.forEach((day, i) => {
+      this.moodHistory[i] = this.moods.filter((mood) => {
+        return moment(mood.beginTime).isSame(day, "day");
+      });
+    });
+    // console.log(this.moodHistory);
+  }
+
   goToPrevMonth() {
     this.slides.slidePrev();
   }
@@ -102,6 +130,22 @@ export class CalendarComponent implements OnChanges, OnInit {
 
   getDateFromIndex(rowIndex: number, colIndex: number): moment.Moment {
     return this.calendarDays[rowIndex * 7 + colIndex];
+  }
+
+  averageMood(rowIndex: number, colIndex: number) {
+    let sum = 0;
+    let num = 0;
+    if (!this.moodHistory[rowIndex * 7 + colIndex]) {
+      return 0;
+    }
+    this.moodHistory[rowIndex * 7 + colIndex].forEach((mood) => {
+      sum += mood.mood;
+      num += 1;
+    });
+
+    let avg = sum / num;
+    // console.log(avg);
+    return avg;
   }
 
  
