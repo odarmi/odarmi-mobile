@@ -7,6 +7,8 @@ import { Mood } from "../mood.model";
 import { PlacesSearchComponent } from "../../places/places-search/places-search.component";
 import { MoodProvider } from "../../../providers/mood/mood.provider";
 import { WeatherProvider } from "../../../providers/weather/weather.provider";
+import { } from "@types/googlemaps";
+
 
 @Component({
     selector: "create-mood",
@@ -32,9 +34,7 @@ import { WeatherProvider } from "../../../providers/weather/weather.provider";
     }
 
     async ngOnInit() {
-      this.location = await this.geolocation.getCurrentPosition();
-      console.log(this.location);
-      let places = await this.placesProvider.placeSearch(this.location);
+      let places = await this.placesProvider.placeSearch();
       this.newMood.locationName = places[0].name;
       this.newMood.placeId = places[0].place_id;
 

@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import axios, { AxiosRequestConfig } from "axios";
 import { Geoposition, Geolocation } from "@ionic-native/geolocation";
 
+import { } from "@types/googlemaps";
+
 /**
  * This service is a wrapper for the Google Places API.
  */
@@ -37,7 +39,12 @@ export class PlacesProvider {
 
   async placeSearch(position?: Geoposition): Promise<google.maps.places.PlaceResult[]> {
     if (!position) {
-      position = await this.geolocationService.getCurrentPosition();
+      try {
+        position = await this.geolocationService.getCurrentPosition();
+      }
+      catch(err) {
+        console.error(err.message);
+      }
     }
     return await new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
       let request: google.maps.places.PlaceSearchRequest = {
@@ -55,7 +62,12 @@ export class PlacesProvider {
 
   async placeAutocomplete(input:string, position?: Geoposition): Promise<google.maps.places.AutocompletePrediction[]> {
     if (!position) {
-      position = await this.geolocationService.getCurrentPosition();
+      try {
+        position = await this.geolocationService.getCurrentPosition();
+      }
+      catch(err) {
+        console.error(JSON.stringify(err));
+      }
     }
     return new Promise<google.maps.places.AutocompletePrediction[]>((resolve, reject) => {
       let request: google.maps.places.AutocompletionRequest = {

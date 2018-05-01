@@ -8,12 +8,19 @@ import { MoodProvider } from "../../providers/mood/mood.provider";
 import { CreateMoodComponent } from "../../components/mood/create-mood/create-mood.component";
 import { Mood } from "../../components/mood/mood.model";
 
+import { AndroidPermissions } from "@ionic-native/android-permissions";
+
+import { } from "@types/googlemaps";
+
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage implements OnInit {
+  permissions = [
+    this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION
+  ];
 
   date: moment.Moment;
   // Next month
@@ -30,7 +37,9 @@ export class HomePage implements OnInit {
 
   constructor(public navCtrl: NavController,
               private moodService: MoodProvider,
-              public modalController: ModalController) {
+              public modalController: ModalController,
+              private androidPermissions: AndroidPermissions
+  ) {
     this.date = moment();
     
     this.prevDate = this.date.clone();
@@ -45,6 +54,20 @@ export class HomePage implements OnInit {
   }
 
   async ngOnInit() {
+    // Get permissions
+    let permissionPromises = this.permissions.map((permission) => {
+      return this.androidPermissions.checkPermission(permission);
+    });
+    try {
+      let res = await Promise.all(permissionPromises);
+      res.forEach((result) => {
+        console.log("Permissions granted.");
+      });
+    }
+    catch(err) {
+      this.androidPermissions.requestPermissions(this.permissions);
+    }
+
     let res = await this.moodService.getMoods();
     this.moods = res.data;
     this.moods.sort((a, b) => {

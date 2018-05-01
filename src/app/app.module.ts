@@ -13,6 +13,7 @@ import { MoodProvider } from '../providers/mood/mood.provider';
 import { UserProvider } from '../providers/user/user.provider';
 import { PlacesProvider } from '../providers/places/places.provider';
 import { WeatherProvider } from '../providers/weather/weather.provider';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { WeatherProvider } from '../providers/weather/weather.provider';
     UserProvider,
     PlacesProvider,
     WeatherProvider,
-    Geolocation
+    Geolocation,
+    AndroidPermissions
   ]
 })
 export class AppModule {}
