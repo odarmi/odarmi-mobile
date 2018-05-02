@@ -32,12 +32,22 @@
         <ion-input type="text" name="location" [(ngModel)]="newMood.locationName" (ionFocus)="openPlacesSearch()">{{newMood.locationName}}</ion-input>
       </ion-item>
       <ion-item>
+        <ion-label color="primary" floating>Category</ion-label>
+        <ion-input type="text" name="category" [(ngModel)]="newMood.category">{{newMood.activity}}</ion-input>
+      </ion-item>
+      <ion-item>
         <ion-label color="primary" floating>What are you doing?</ion-label>
-        <ion-input type="text" id="name" name="name" [(ngModel)]="newMood.activity">{{newMood.activity}}</ion-input>
+        <ion-input type="text" name="activity" [(ngModel)]="newMood.activity">{{newMood.activity}}</ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="primary" floating>Who are you with?</ion-label>
+        <ion-select type="text" name="people" multiple="true" [(ngModel)]="newMood.people">
+          <ion-option *ngFor="let person of defaultPeople">{{ person }}</ion-option>
+        </ion-select>
       </ion-item>
       <ion-item>
         <ion-label color="primary" floating>Name this mood entry (optional)</ion-label>
-        <ion-input type="text" id="name" name="name" [(ngModel)]="newMood.name">{{newMood.name}}</ion-input>
+        <ion-input type="text" name="name" [(ngModel)]="newMood.name">{{newMood.name}}</ion-input>
       </ion-item>
       <ion-item-divider>
         Current Weather
@@ -46,7 +56,17 @@
         {{currentWeather?.summary}}
       </ion-item>
     </ion-item-group>
-    <button ion-button full>Add</button>
+    <button ion-button full type="submit">Add</button>
+    <button ion-button full type="button" color="secondary" (click)="predictMood()">Predict Mood</button>
   </form>
+
+  <ion-card>
+    <ion-card-header>
+      Your Predicted Mood
+    </ion-card-header>
+    <ion-card-content>
+      {{ predictedMood }}
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>

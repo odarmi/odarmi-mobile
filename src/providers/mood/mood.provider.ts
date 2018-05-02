@@ -32,7 +32,6 @@ export class MoodProvider {
 
   async addMood(mood: Mood): Promise<AxiosResponse> {
     let url = `${this.serverConfig.host}/moods`;
-    let res = {};
     try {
       let res = await axios.post(url, mood);
       return res;
@@ -41,6 +40,17 @@ export class MoodProvider {
       console.error(err);
     }
     
+  }
+
+  async predictMood(mood: Mood): Promise<AxiosResponse> {
+    let url = `${this.serverConfig.host}/predict`;
+    try {
+      let res = await axios.post(url, mood);
+      return res;
+    }
+    catch(err) {
+      console.error(err);
+    }
   }
 
 }

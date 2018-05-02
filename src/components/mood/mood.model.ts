@@ -23,6 +23,7 @@ class Mood {
   public activity: string;
   public weather: string;
   public mood: MoodTypes;
+  public people: string[];
 
   // ML Data
   public address: string;
@@ -31,6 +32,7 @@ class Mood {
 
   constructor() {
     this.userId = 1;
+    this.people = [];
   }
 
   /**
