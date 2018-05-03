@@ -9,6 +9,9 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-slides [centeredSlides]="true" [initialSlide]=1 (ionSlideDidChange)="slideChanged()">
     <ion-slide *ngFor="let slide of calendarSlides">
       <calendar [date]="slide.date" [slides]="slides" (dayChange)="onDayChange($event)"></calendar>

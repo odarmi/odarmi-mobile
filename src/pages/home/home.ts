@@ -193,11 +193,21 @@ export class HomePage implements OnInit {
   }
 
   averageMood() {
+    if (!this.moodsToday || this.moodsToday.length == 0) {
+      return 0;
+    }
     let sum = 0;
     this.moodsToday.forEach((mood) => {
       sum += mood.mood;
     });
     return (sum / this.moodsToday.length).toFixed(2);
+  }
+
+  async doRefresh(event) {
+    await this.moodService.fetchMoods();
+    this.moods = await this.moodService.getMoods();
+    this.moods.sort(this.compareMoodByBeginTime);
+    event.complete();
   }
 
 }

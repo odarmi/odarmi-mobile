@@ -45,6 +45,7 @@ export class MoodProvider {
     let url = `${this.serverConfig.host}/moods`;
     try {
       let res = await axios.post(url, mood);
+      this.fetchMoods();
       return res;
     }
     catch(err) {
