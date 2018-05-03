@@ -10,7 +10,10 @@
 </ion-header>
 <ion-content>
   <ion-slides [centeredSlides]="true" [initialSlide]=1 (ionSlideDidChange)="slideChanged()">
-    <ion-slide>
+    <ion-slide *ngFor="let slide of calendarSlides">
+      <calendar [date]="slide.date" [slides]="slides" (dayChange)="onDayChange($event)"></calendar>
+    </ion-slide>
+    <!-- <ion-slide>
       <calendar [date]="prevDate" [slides]="slides"></calendar>
     </ion-slide>
     <ion-slide>
@@ -18,18 +21,42 @@
     </ion-slide>
     <ion-slide>
       <calendar [date]="nextDate" [slides]="slides"></calendar>
-    </ion-slide>
+    </ion-slide> -->
   </ion-slides>
 
-  <ion-card>
-    <ion-list>
-      <ion-list-header>
-        Your Mood Today
-      </ion-list-header>
-      <ion-item *ngFor="let mood of moodsToday">
-        {{mood.mood}}
-      </ion-item>
-    </ion-list>
+  <h1>Your Mood</h1>
+
+  <ion-card *ngFor="let mood of moodsToday" (click)="goToMood(mood)">
+    <ion-card-header>
+
+    </ion-card-header>
+    <ion-card-content>
+
+      <ion-list>
+        <ion-item>
+          <ion-note item-end>
+            <ion-icon name="time"></ion-icon>
+            {{ mood.beginTime | date: "hh:mm aaa" | lowercase }} - {{ mood.endTime | date: "hh:mm aa" | lowercase }}
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="locate"></ion-icon>
+          {{ mood.locationName }}
+        </ion-item>
+        <!-- <ion-item>
+          <ion-icon name="cloud"></ion-icon>
+          {{ mood.weather }}
+        </ion-item> -->
+        <ion-item>
+          <ion-icon name="happy"></ion-icon>
+          {{ mood.mood }}
+        </ion-item>
+        <ion-item>
+          <ion-icon name="people"></ion-icon>
+          {{ mood.people.length }}
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
   </ion-card>
 
 

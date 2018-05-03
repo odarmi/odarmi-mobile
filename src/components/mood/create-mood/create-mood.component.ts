@@ -54,7 +54,7 @@ import { } from "@types/googlemaps";
                 private weatherProvider: WeatherProvider,
                 private toastController: ToastController
     ) {
-        
+
     }
 
     async ngOnInit() {
@@ -72,6 +72,8 @@ import { } from "@types/googlemaps";
       let response = await this.weatherProvider.getWeather();
       this.currentWeather = response.data.currently;
       this.newMood.weather = this.currentWeather.icon;
+
+      this.predictMood();
       console.log(this.newMood.weather);
     }
 
@@ -98,8 +100,8 @@ import { } from "@types/googlemaps";
           }
           this.fillPlaceData();
         }
-        
-        
+
+
       });
       placesSearchModal.present();
       console.log("Here");

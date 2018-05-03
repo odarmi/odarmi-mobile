@@ -35,7 +35,7 @@ export class PlacesProvider {
 
   isAutocompletePrediction(data: any): data is google.maps.places.AutocompletePrediction {
     return data.matched_substrings !== undefined;
-  } 
+  }
 
   async placeSearch(position?: Geoposition): Promise<google.maps.places.PlaceResult[]> {
     if (!position) {
@@ -57,6 +57,17 @@ export class PlacesProvider {
       this.placesService.nearbySearch(request, (results, status) => {
         resolve(results);
       });
+    });
+  }
+
+  textSearch(text: string): Promise<google.maps.places.PlaceResult[]> {
+    return new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
+      let request = {
+        query: text
+      };
+      this.placesService.textSearch(request, (results, status) => {
+        resolve(results);
+      })
     });
   }
 

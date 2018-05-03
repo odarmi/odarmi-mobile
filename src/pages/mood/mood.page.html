@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>View Mood</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-icon name="locate"></ion-icon>
+          {{ mood.locationName }}
+        </ion-item>
+        <ion-item>
+          {{ mood.address }}
+        </ion-item>
+        <ion-item>
+          <ion-icon name="time"></ion-icon>
+          {{ mood.beginTime | date: "hh:mm aaa" | lowercase }} - {{ mood.endTime | date: "hh:mm aa" | lowercase }}
+        </ion-item>
+        <ion-item>
+          <ion-icon name="cloud"></ion-icon>
+          {{ mood.weather }}
+        </ion-item>
+        <ion-item>
+          <ion-icon name="happy"></ion-icon>
+          {{ mood.mood }}
+        </ion-item>
+      </ion-list>
+
+      <div id="map" #gmap style="width: 100%; height: 400px">
+
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

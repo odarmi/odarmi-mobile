@@ -19,15 +19,24 @@
     </ion-row>
     <ion-row align-items-center *ngFor="let week of calendarRowIndices">
       <ion-col align-self-center *ngFor="let day of calendarColIndices">
-        <button ion-button ion-col clear round class="day day_active-day" *ngIf="getDateFromIndex(week, day).isSame(today, 'day'); else notCurrentDay">
-          {{getDateFromIndex(week, day).date()}} {{averageMood(week, day)}}
+        <button ion-button ion-col clear round class="day day_active-day"
+          [ngClass]="getMoodClass(week, day)"
+          *ngIf="getDateFromIndex(week, day).isSame(today, 'day'); else notCurrentDay"
+          (click)="selectDay(week, day)">
+          {{getDateFromIndex(week, day).date()}}
         </button>
         <ng-template #notCurrentDay>
-          <button ion-button ion-col clear round class="day day_active-month" *ngIf="getDateFromIndex(week, day).isSame(date, 'month')">
-            {{getDateFromIndex(week, day).date()}} {{averageMood(week, day)}}
+          <button ion-button ion-col clear round class="day day_active-month"
+          [ngClass]="getMoodClass(week, day)"
+          *ngIf="getDateFromIndex(week, day).isSame(date, 'month')"
+          (click)="selectDay(week, day)">
+            {{getDateFromIndex(week, day).date()}}
           </button>
-          <button ion-button ion-col clear round class="day day_inactive" *ngIf="!getDateFromIndex(week, day).isSame(date, 'month')">
-            {{getDateFromIndex(week, day).date()}} {{averageMood(week, day)}}
+          <button ion-button ion-col clear round class="day day_inactive"
+          [ngClass]="getMoodClass(week, day)"
+          *ngIf="!getDateFromIndex(week, day).isSame(date, 'month')"
+          (click)="selectDay(week, day)">
+            {{getDateFromIndex(week, day).date()}}
           </button>
         </ng-template>
       </ion-col>

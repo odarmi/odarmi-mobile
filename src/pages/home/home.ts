@@ -1,7 +1,7 @@
 
 import { CalendarComponent } from "../../components/calendar/calendar.component";
 
-import { Component, Input, ViewChild, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
 import { NavController, Slides, ModalController } from 'ionic-angular';
 import * as moment from "moment";
 import { MoodProvider } from "../../providers/mood/mood.provider";
@@ -11,6 +11,7 @@ import { Mood } from "../../components/mood/mood.model";
 import { AndroidPermissions } from "@ionic-native/android-permissions";
 
 import { } from "@types/googlemaps";
+import { MoodPage } from "../mood/mood.page";
 
 
 @Component({
@@ -20,6 +21,18 @@ import { } from "@types/googlemaps";
 export class HomePage implements OnInit {
   permissions = [
     this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION
+  ];
+
+  calendarSlides = [
+    {
+      date: moment().startOf("month").subtract(1, "month")
+    },
+    {
+      date: moment().startOf("month")
+    },
+    {
+      date: moment().startOf("month").add(1, "month")
+    }
   ];
 
   date: moment.Moment;
@@ -41,7 +54,7 @@ export class HomePage implements OnInit {
               private androidPermissions: AndroidPermissions
   ) {
     this.date = moment();
-    
+
     this.prevDate = this.date.clone();
     this.prevDate.subtract(1, "M");
 
@@ -63,73 +76,120 @@ export class HomePage implements OnInit {
       res.forEach((result) => {
         console.log("Permissions granted.");
       });
+
     }
     catch(err) {
       this.androidPermissions.requestPermissions(this.permissions);
     }
 
-    let res = await this.moodService.getMoods();
-    this.moods = res.data;
-    this.moods.sort((a, b) => {
-      if (moment(a.beginTime).isAfter(moment(b.beginTime))) {
-        return -1;
-      }
-      return 1;
-    });
+    this.moods = await this.moodService.getMoods();
+    this.moods.sort(this.compareMoodByBeginTime);
     this.moodsToday = this.moods.filter((mood) => {
       return moment(mood.beginTime).isSame(moment(), "day") ||
               moment(mood.endTime).isSame(moment(), "day");
     });
-    console.log(this.moods[0]);
-    console.log(this.moodsToday);
+
+    // console.log(this.moods[0]);
+    // console.log(this.moodsToday);
   }
 
   slideChanged() {
     let curIndex = this.slides.getActiveIndex();
-    if (curIndex == 2) {
-      this.goToNextMonth();
+    let prevIndex = this.slides.getPreviousIndex();
+
+    // We slid to the next month, so add another slide at the end.
+    if (this.slides.isEnd()) {
+      console.log("end: " + curIndex);
+      let curDate = this.calendarSlides[curIndex].date;
+      this.calendarSlides.push({
+        date: moment(curDate).add(1, "month")
+      });
+      this.calendarSlides.splice(0, 1);
+      this.slides.slideTo(1, 0, false);
+      // this.slides.update();
     }
-    else if (curIndex == 0) {
-      this.goToPrevMonth();
+
+    // We slid to the previous month
+    else if (this.slides.isBeginning()) {
+      console.log("beginning");
+      let curDate = this.calendarSlides[curIndex].date;
+      this.calendarSlides.unshift({
+        date: moment(curDate).subtract(1, "month")
+      });
+      this.calendarSlides.splice(3, 1);
+      this.slides.slideTo(1, 0, false);
     }
-    this.slides.slideTo(1, 0, false);
+    // if (curIndex == 2) {
+    //   this.goToNextMonth();
+    // }
+    // else if (curIndex == 0) {
+    //   this.goToPrevMonth();
+    // }
+    // this.slides.slideTo(1, 0, false);
   }
 
-  goToNextMonth() {
-    console.log("Moving to next month...");
+  // goToNextMonth() {
+  //   console.log("Moving to next month...");
 
-    this.date.add(1, "M");
-    this.prevDate.add(1, "M");
-    this.nextDate.add(1, "M");
+  //   this.date.add(1, "M");
+  //   this.prevDate.add(1, "M");
+  //   this.nextDate.add(1, "M");
 
-    // We need to explicity assign the dates to invoke ngOnChanges()
-    this.propagateDateChanges();
-  }
+  //   // We need to explicity assign the dates to invoke ngOnChanges()
+  //   this.propagateDateChanges();
+  // }
 
-  goToPrevMonth() {
-    console.log("Moving to prev month...");
-    
-    this.date.subtract(1, "M");
-    this.prevDate.subtract(1, "M");
-    this.nextDate.subtract(1, "M");
-    
-    // We need to explicity assign the dates to invoke ngOnChanges()
-    this.propagateDateChanges();
-  }
+  // goToPrevMonth() {
+  //   console.log("Moving to prev month...");
+
+  //   this.date.subtract(1, "M");
+  //   this.prevDate.subtract(1, "M");
+  //   this.nextDate.subtract(1, "M");
+
+  //   // We need to explicity assign the dates to invoke ngOnChanges()
+  //   this.propagateDateChanges();
+  // }
 
   /**
    * Explicity clones and reassigns the date objects in order
    * to invoke ngOnChanges() in the child component.
    */
-  propagateDateChanges() {
-    this.date = this.date.clone();
-    this.prevDate = this.prevDate.clone();
-    this.nextDate = this.nextDate.clone();
+  // propagateDateChanges() {
+  //   this.date = this.date.clone();
+  //   this.prevDate = this.prevDate.clone();
+  //   this.nextDate = this.nextDate.clone();
+  // }
+  compareMoodByBeginTime(a: Mood, b: Mood) {
+    if (moment(a.beginTime).isBefore(moment(b.beginTime))) {
+      return -1;
+    }
+    return 1;
+  }
+
+  refreshMoodsToday(date: moment.Moment) {
+    console.log(date);
+    this.moodsToday = this.moods.filter((mood) => {
+      return moment(mood.beginTime).isSame(date, "day") ||
+              moment(mood.endTime).isSame(date, "day");
+    });
+    this.moodsToday.sort(this.compareMoodByBeginTime);
+    console.log(this.moodsToday);
   }
 
   addMood() {
     let modal = this.modalController.create(CreateMoodComponent, {});
     modal.present();
+  }
+
+  goToMood(mood: Mood) {
+    this.navCtrl.push(MoodPage, {
+      mood: mood
+    });
+  }
+
+  onDayChange(newDate: moment.Moment) {
+    this.refreshMoodsToday(newDate);
+    console.log(newDate);
   }
 
 }

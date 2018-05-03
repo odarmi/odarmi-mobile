@@ -17,17 +17,28 @@ export class MoodProvider {
 
   serverConfig: any;
 
+  moods: Mood[];
+
   constructor() {
     console.log('Hello MoodProvider Provider');
     this.serverConfig = config.server;
     console.log(`Server config: ${JSON.stringify(this.serverConfig)}`);
+    this.moods = [];
   }
 
-  async getMoods(): Promise<AxiosResponse> {
+  async fetchMoods(): Promise<void> {
     let url = `${this.serverConfig.host}/moods`;
     console.log(`url: ${url}`);
-    let moods = await axios.get(url);
-    return moods;
+    let res = await axios.get(url);
+    this.moods = res.data;
+  }
+
+  async getMoods(): Promise<Mood[]> {
+    if (this.moods.length === 0) {
+      await this.fetchMoods();
+    }
+
+    return this.moods;
   }
 
   async addMood(mood: Mood): Promise<AxiosResponse> {
@@ -39,7 +50,7 @@ export class MoodProvider {
     catch(err) {
       console.error(err);
     }
-    
+
   }
 
   async predictMood(mood: Mood): Promise<AxiosResponse> {
