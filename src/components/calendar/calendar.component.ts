@@ -159,15 +159,15 @@ export class CalendarComponent implements OnChanges, OnInit {
     if (averageMood == 1) {
       return "mood_low";
     }
-    else if (averageMood > 1 && averageMood < 2) {
+    else if (averageMood > 1 && averageMood <= 2) {
       return "mood_medium-low";
     }
 
-    else if (averageMood >= 2 && averageMood < 3) {
+    else if (averageMood > 2 && averageMood <= 3) {
       return "mood_medium";
     }
 
-    else if (averageMood >=3 && averageMood < 4) {
+    else if (averageMood > 3 && averageMood <= 4) {
       return "mood_medium-high";
     }
 
