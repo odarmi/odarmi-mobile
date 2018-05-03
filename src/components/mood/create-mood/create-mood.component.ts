@@ -69,9 +69,15 @@ import { } from "@types/googlemaps";
       this.fillPlaceData();
 
       // set the weather
-      let response = await this.weatherProvider.getWeather();
-      this.currentWeather = response.data.currently;
-      this.newMood.weather = this.currentWeather.icon;
+      try {
+        let response = await this.weatherProvider.getWeather();
+        this.currentWeather = response.data.currently;
+        this.newMood.weather = this.currentWeather.icon;
+      }
+      catch(err) {
+        this.newMood.weather = "clear-day";
+      }
+
 
       this.predictMood();
       console.log(this.newMood.weather);
