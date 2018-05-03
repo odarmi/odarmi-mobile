@@ -189,7 +189,15 @@ export class HomePage implements OnInit {
 
   onDayChange(newDate: moment.Moment) {
     this.refreshMoodsToday(newDate);
-    console.log(newDate);
+    // console.log(newDate);
+  }
+
+  averageMood() {
+    let sum = 0;
+    this.moodsToday.forEach((mood) => {
+      sum += mood.mood;
+    });
+    return sum / this.moodsToday.length;
   }
 
 }

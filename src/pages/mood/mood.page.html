@@ -11,11 +11,8 @@
     <ion-card-content>
       <ion-list>
         <ion-item>
-          <ion-icon name="locate"></ion-icon>
-          {{ mood.locationName }}
-        </ion-item>
-        <ion-item>
-          {{ mood.address }}
+          <ion-icon name="happy"></ion-icon>
+          {{ mood.mood }}
         </ion-item>
         <ion-item>
           <ion-icon name="time"></ion-icon>
@@ -26,8 +23,15 @@
           {{ mood.weather }}
         </ion-item>
         <ion-item>
-          <ion-icon name="happy"></ion-icon>
-          {{ mood.mood }}
+          <ion-icon name="people"></ion-icon>
+          {{ mood.people.join(", ") }}
+        </ion-item>
+        <ion-item>
+          <ion-icon name="locate"></ion-icon>
+          {{ mood.locationName }}
+        </ion-item>
+        <ion-item>
+          {{ mood.address }}
         </ion-item>
       </ion-list>
 

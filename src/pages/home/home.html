@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle icon-only>
       <ion-icon name='menu'></ion-icon>
     </button>
@@ -24,7 +24,10 @@
     </ion-slide> -->
   </ion-slides>
 
-  <h1>Your Mood</h1>
+  <div *ngIf="moodsToday && averageMood()">
+    <h6 padding ion-text>Average Mood: {{ moodsToday? averageMood() : "" }}</h6>
+  </div>
+
 
   <ion-card *ngFor="let mood of moodsToday" (click)="goToMood(mood)">
     <ion-card-header>
@@ -47,14 +50,24 @@
           <ion-icon name="cloud"></ion-icon>
           {{ mood.weather }}
         </ion-item> -->
-        <ion-item>
+        <ion-row>
+          <ion-col>
+            <ion-icon name="happy"></ion-icon>
+            {{ mood.mood }}
+          </ion-col>
+          <ion-col>
+            <ion-icon name="people"></ion-icon>
+            {{ mood.people.length }}
+          </ion-col>
+        </ion-row>
+        <!-- <ion-item>
           <ion-icon name="happy"></ion-icon>
           {{ mood.mood }}
         </ion-item>
         <ion-item>
           <ion-icon name="people"></ion-icon>
           {{ mood.people.length }}
-        </ion-item>
+        </ion-item> -->
       </ion-list>
     </ion-card-content>
   </ion-card>
