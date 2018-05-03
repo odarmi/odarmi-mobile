@@ -197,7 +197,7 @@ export class HomePage implements OnInit {
     this.moodsToday.forEach((mood) => {
       sum += mood.mood;
     });
-    return sum / this.moodsToday.length;
+    return (sum / this.moodsToday.length).toFixed(2);
   }
 
 }
